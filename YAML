@@ -1,0 +1,28 @@
+name: Aether Quanta CI/CD
+on:
+  push:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - run: pip install -r requirements.txt
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - run: npm install
+      - run: python test_aum.py
+      - run: npm test
+      - run: npm run build
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v3
+      - run: gcloud run deploy cosmic-advisory --image=gcr.io/$GOOGLE_PROJECT_ID/cosmic-advisory --platform=managed --region=us-central1 --allow-unauthenticated
+        env:
+          GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
