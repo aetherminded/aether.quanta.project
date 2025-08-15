@@ -1,0 +1,7 @@
+// scripts/opensea_automation.js
+const fs = require('fs');
+const metadata = [
+  { tokenId: 'AQ-0001', name: 'Aether Quanta #1', description: 'Quantum-enhanced NFT', image: 'ipfs://QmYourImageHash', attributes: [{ trait_type: 'Coherence', value: 0.92 }, { trait_type: 'Schumann', value: 7.83 }] },
+];
+const csv = metadata.map(m => `${m.tokenId},${m.name},${m.description},${m.image},${JSON.stringify(m.attributes)}`).join('\n');
+fs.writeFileSync('opensea_upload.csv', csv);
