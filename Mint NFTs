@@ -1,0 +1,8 @@
+// scripts/mint.js
+const { ethers } = require("hardhat");
+async function main() {
+  const selfieToken = await ethers.getContractAt("SelfieToken", "0xYourContractAddress");
+  await selfieToken.mintNFT("AQ-0001", "ipfs://QmYourMetadataHash");
+  console.log("Minted AQ-0001!");
+}
+main();
